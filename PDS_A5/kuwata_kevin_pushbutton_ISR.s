@@ -1,8 +1,14 @@
 	.include "address_map_nios2.s"
 	.extern	PATTERN					# externally defined variables
-	.extern	SHIFT_DIR			#TODO delete later, we can use this register since we don't care
-	.extern	SHIFT_EN			#TODO delete later			
-	.extern SPEED_VALUE
+	.extern	SHIFT_DIR
+	.extern	SHIFT_EN
+	
+	
+.equ	LEFT,		0
+.equ	RIGHT,		1
+
+.equ	DISABLE,	0
+.equ	ENABLE,		1
 	
 /*******************************************************************************
  * Pushbutton - Interrupt Service Routine
@@ -26,14 +32,10 @@ PUSHBUTTON_ISR:
 CHECK_KEY0:
 	andi	r13, r11, 0b0001		# check KEY0, refer to figure 6 if confused. 
 	beq		r13, zero, CHECK_KEY1	#will be a 1 if interrupt triggered, this is the "flag"
-	
-	#if this key is pressed we want to speed up. because its higher on the board, like a natural up arrow.
-	#get the current value thats in speed. 
+
 	
 	#this is where we would speed up
-/* ============================================================  */
-/* ============================================================  */
-
+	
 	movia r16, TIMER_BASE		#0xFF202000 TIMER 1
 	 #stop the timer. 
 	movi 	r15, 0b1011 #bit4 at base + 0x04 is the stop bit. 1 for stop, bit 3 is start bit 
@@ -48,16 +50,12 @@ CHECK_KEY0:
 	#get ready to start timer by setting bits3,2,1 (yes were off by one index, sure but you know what I mean). bit0 in this instance is bit 1 ok?
 	movi r15, 0b0111	#bit3 is the start bit, 1 and 2 are the continuous mode and interrupt enable.
 	sthio r15, 4(r16)		#start the timer again
-/* ============================================================  */
+
 
 CHECK_KEY1:
 	andi	r13, r11, 0b0010		# check KEY1
 	beq		r13, zero, END_PUSHBUTTON_ISR #so no interrupt happened, this probably won't occur.
 	
-	
-/* ============================================================  */
-/* ============================================================  */
-
 	movia r16, TIMER_BASE		#0xFF202000 TIMER 1
 	 #stop the timer. 
 	movi 	r15, 0b1011 #bit4 at base + 0x04 is the stop bit. 1 for stop, bit 3 is start bit 
@@ -72,11 +70,6 @@ CHECK_KEY1:
 	#get ready to start timer by setting bits3,2,1 (yes were off by one index, sure but you know what I mean). bit0 in this instance is bit 1 ok?
 	movi r15, 0b0111	#bit3 is the start bit, 1 and 2 are the continuous mode and interrupt enable.
 	sthio r15, 4(r16)		#start the timer again
-/* ============================================================  */
-
-#Determine what speed -- change the counter for the timer. 
-SET_SPEED:
-	
 	
 	
 	#this has to be called to return to the main loop, and to clean up the stack and restore values.
