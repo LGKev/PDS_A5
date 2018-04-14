@@ -13,21 +13,14 @@
 
 	.text				
 	.global _start
-	
-	.equ	LEFT,		0
-	.equ	RIGHT,		1
 
-	.equ	DISABLE,	0
-	.equ	ENABLE,		1
-
-	
 _start:
 	/* set up the stack */
 	movia 	sp, SDRAM_END - 3	# stack starts from largest memory address
 
 	movia	r16, TIMER_BASE		# interval timer base address, 0xFF202000 timer 1
 	/* set the interval timer period for scrolling the HEX displays */
-	movia	r12, 5000000		# 1/(100 MHz) x (5 x 10^6) = 50 msec
+	movia	r12, 50000000		# 1/(100 MHz) x (5 x 10^6) = 50 msec
 	sthio	r12, 8(r16)			# store the low half word of counter start value, so take the first half of r12 and put into the low half of the start bit in the register for the timer.
 	#at 0x08 offset thats the low16, then at 0x0C thats the next 16 bits.
 	srli	r12, r12, 16
@@ -35,7 +28,7 @@ _start:
 
 	/* start interval timer, enable its interrupts */
 	movi	r15, 0b0111			# START = 1, CONT = 1, ITO = 1
-	sthio	r15, 4(r16)
+	sthio	r15, 4(r16) 	 	
 
 	/* write to the pushbutton port interrupt mask register */
 	movia	r15, KEY_BASE		# pushbutton key base address, 0xFF200050
@@ -61,16 +54,20 @@ IDLE:
 	.global	PATTERN
 PATTERN:
 	.word	0x0000000F			# pattern to show on the HEX displays
+	
 	.global	SHIFT_DIR
 SHIFT_DIR:	
-	.word	LEFT	 			# pattern shifting direction
+	.word	0	 			# pattern shifting direction
+
 	.global	SHIFT_EN
 SHIFT_EN:
-	.word	ENABLE				# stores whether to shift or not
-
-	.global ENABLE
+	.word	1				# stores whether to shift or not
 	
-
+	.global ENABLE				#will delete eventually TODO
+	
+.global SPEED_VALUE
+SPEED_VALUE:
+	.word 4			# 4 is the default speed, higher number is faster, lower number is slower.
 
 	.end
 	
