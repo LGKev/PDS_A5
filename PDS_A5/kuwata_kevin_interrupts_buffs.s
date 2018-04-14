@@ -13,14 +13,7 @@
 
 	.text				
 	.global _start
-	
-	.equ	LEFT,		0
-	.equ	RIGHT,		1
 
-	.equ	DISABLE,	0
-	.equ	ENABLE,		1
-
-	
 _start:
 	/* set up the stack */
 	movia 	sp, SDRAM_END - 3	# stack starts from largest memory address
@@ -61,16 +54,20 @@ IDLE:
 	.global	PATTERN
 PATTERN:
 	.word	0x0000000F			# pattern to show on the HEX displays
+	
 	.global	SHIFT_DIR
 SHIFT_DIR:	
-	.word	LEFT	 			# pattern shifting direction
+	.word	0	 			# pattern shifting direction
+
 	.global	SHIFT_EN
 SHIFT_EN:
-	.word	ENABLE				# stores whether to shift or not
-
-	.global ENABLE
+	.word	1				# stores whether to shift or not
 	
-
+	.global ENABLE				#will delete eventually TODO
+	
+.global SPEED_VALUE
+SPEED_VALUE:
+	.word 0x00000004			# 4 is the default speed, higher number is faster, lower number is slower.
 
 	.end
 	

@@ -4,8 +4,8 @@
 	.extern	SHIFT_EN
 	
 
-	.equ	LEFT,		0
-.equ	RIGHT,		1
+	.equ	LEFT,		1
+.equ	RIGHT,		0
 
 .equ	DISABLE,	0
 .equ	ENABLE,		1
@@ -35,7 +35,7 @@ INTERVAL_TIMER_ISR:
 
 	movia	r20, HEX3_HEX0_BASE		# HEX3_HEX0 base address
 	movia	r21, PATTERN			# set up a pointer to the display pattern
-	movia	r22, SHIFT_DIR			# set up a pointer to the shift direction variable
+	#movia	r22, SHIFT_DIR			# set up a pointer to the shift direction variable
 	movia	r23, SHIFT_EN			# set up a pointer to the shift enable variable
 
 	ldw		r6, 0(r21)				# load the pattern
