@@ -60,7 +60,7 @@ IDLE:
  ******************************************************************************/
 .global	LetterArray
 LetterArray: 
-	.word   0x76, 0x79, 0x38, 0x38,0x3F, 0x00, 0x7F, 0x3E, 0x71, 0x71, 0x6D, 0x00, 0x00, 0x00, 0x00
+	.word   0x00, 0x76, 0x79, 0x38, 0x38,0x3F, 0x00, 0x7F, 0x3E, 0x71, 0x71, 0x6D, 0x00, 0x00, 0x00
 		# off, H	, E ,	L,		L,   0,		_, B, U, F, F, S, _, _
 	
 .global SPEED_VALUE
@@ -68,7 +68,7 @@ SPEED_VALUE:
 	.word 4			# 4 is the default speed, higher number is faster, lower number is slower.
 .global LetterArraySize
 LetterArraySize:
-	.word 15
+	.word 16
 	.end
 	
 	
