@@ -21,17 +21,10 @@ INTERVAL_TIMER_ISR:
 	sthio	r0,  0(r10)				# any "WRITE" to status clears any interrupts
 
 	movia	r20, HEX3_HEX0_BASE		# HEX3_HEX0 base address
-	#movia	r23, LetterArraySize	#keep track of index.
 
-	ldw		r6, 0(r22)				# load the pattern
+	ldw		r6, 0(r17)				# load the pattern
 	stwio	r6, 0(r20)				# store to HEX3 ... HEX0
 	
-	
-	#ldw		r4, 0(r23)				# check if the pattern should be shifted
-	#movi	r8, ENABLE				# code to check if shifting is enabled
-	
-	
-	#bne		r4, r8, END_INTERVAL_TIMER_ISR
 
 SHIFT_L:
 	slli	r6, r6, 8		#shift the H now
@@ -44,7 +37,7 @@ SHIFT_L:
 
 
 STORE_PATTERN:
-	stw		r6, 0(r22)				# store display pattern
+	stw		r6, 0(r17)				# store display pattern
 	#this is actually changing the r21 base pattern which we don't want!
 
 br END_INTERVAL_TIMER_ISR

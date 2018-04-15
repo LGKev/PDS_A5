@@ -12,7 +12,7 @@
  ******************************************************************************/
 	.global	PUSHBUTTON_ISR
 PUSHBUTTON_ISR:
-	subi	sp, sp, 48				# reserve space on the stack
+	subi	sp, sp, 48		# reserve space on the stack
 	stw		ra, 0(sp)
 	stw		r10, 4(sp) 		#keybase
 	stw		r11, 8(sp)		#key1 capture register
@@ -25,7 +25,10 @@ PUSHBUTTON_ISR:
 	stw		r4, 32(sp)		#default
 	stw		r5, 36(sp)		#faster
 	stw		r6, 40(sp)		#faster II
-	stw		r7, 44(sp)		#faster III
+	stw		r7, 44(sp)		#faster II
+	
+	#stw		r21, 48(sp)
+	#stw		r22, 52(sp)
 	
 	
 	movia r16, TIMER_BASE		#0xFF202000 TIMER 1
@@ -160,6 +163,11 @@ END_PUSHBUTTON_ISR:
 	ldw		r5, 36(sp)
 	ldw		r6, 40(sp)
 	ldw		r7, 44(sp)
+	
+	#ldw		r21, 48(sp) #need to restore these registers because they are used for the patterns!
+	#ldw		r22, 52(sp)
+	
+	
 	addi	sp,  sp, 48
 
 	ret
