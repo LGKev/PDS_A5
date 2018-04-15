@@ -42,6 +42,13 @@ _start:
 	wrctl	ienable, r7			# enable interrupts for the given mask bits
 	movi	r7, 1
 	wrctl	status, r7			# turn on Nios II interrupt processing
+	
+	movia	r21, LetterArray			# set up a pointer to the display pattern
+	movia 	r20, LetterArraySize		#get the value of the size.
+	ldw		r19, 0(r20)
+	movia	r22, LetterArray			# set up a pointer to the display pattern
+	movia		r6, 0(r0)
+
 
 IDLE:
 	br 		IDLE				# main program simply idles
@@ -51,24 +58,17 @@ IDLE:
  * The global variables used by the interrupt service routines for the interval
  * timer and the pushbutton keys are declared below
  ******************************************************************************/
-	.global	PATTERN
-PATTERN:
-	.word	0x0000000F			# pattern to show on the HEX displays
-	
-	.global	SHIFT_DIR
-SHIFT_DIR:	
-	.word	0	 			# pattern shifting direction
-
-	.global	SHIFT_EN
-SHIFT_EN:
-	.word	1				# stores whether to shift or not
-	
-	.global ENABLE				#will delete eventually TODO
+.global	LetterArray
+LetterArray: 
+	.word  0x00, 0x76, 0x79, 0x38, 0x38,0x3F, 0x00, 0x7F, 0x3E, 0x71, 0x71, 0x6D, 0x40, 0x40,0x40, 0x00, 0x00, 0x00, 0x00
+		# off, H	, E ,	L,		L,   0,		_, B, U, F, F, S, _, _
 	
 .global SPEED_VALUE
 SPEED_VALUE:
 	.word 4			# 4 is the default speed, higher number is faster, lower number is slower.
-
+.global LetterArraySize
+LetterArraySize:
+	.word 20
 	.end
 	
 	
